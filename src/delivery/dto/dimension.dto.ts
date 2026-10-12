@@ -1,0 +1,23 @@
+
+import { Type } from 'class-transformer';
+import { IsNumber, Max, Min } from 'class-validator';
+
+export class DimensionDto {
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  @Max(100)
+  lengthCm: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  @Max(100)
+  widthCm: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  @Max(100)
+  heightCm: number;
+}

@@ -1,42 +1,45 @@
+
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class LoansService {
-    calculateInstallment(
-        principal: number,
-        currency: string,
-        months: number,
-        annualInterestRate: number,
-    ){
-        const monthlyInterestRate = annualInterestRate / 12 / 100
-        
-        let monthlyInstallment: number
+  calculateInstallment(
+    principal: number,
+    currency: string,
+    months: number,
+    annualInterestRate: number,
+  ) {
+    const monthlyInterestRate = annualInterestRate / 12 / 100;
 
-        if (monthlyInterestRate === 0){
-            monthlyInstallment = principal / months
-        } else {
-            const r = monthlyInterestRate
-            const n = months
+    let monthlyInstallment: number;
 
-            monthlyInstallment = 
-            (principal * r * Math.pow(1 + r, n)) /
-            (Math.pow(1 + r,n)- 1)     
+    if (monthlyInterestRate === 0) {
+      monthlyInstallment = principal / months;
+    } else {
+      const r = monthlyInterestRate;
+      const n = months;
+      const factor = Math.pow(1 + r, n);
+
+      monthlyInstallment =
+        (principal * r * factor) / (factor - 1);
     }
 
-    monthlyInstallment = Math.round(monthlyInstallment)
+    monthlyInstallment = Math.round(monthlyInstallment);
 
-    const totalPayment = monthlyInstallment + months
-    const totalInterest = totalPayment - principal
+    const totalPayment = monthlyInstallment * months;
+    const totalInterest = totalPayment - principal;
 
     return {
-        principal,
-        currency,
-        months,
-        annualInterestRate,
-        monthlyInterestRate: Number(monthlyInterestRate.toFixed(4)),
-        monthlyInstallment,
-        totalPayment,
-        totalInterest,
-    }
-}
+      principal,
+      currency,
+      months,
+      annualInterestRate,
+      monthlyInterestRate: Number(
+        monthlyInterestRate.toFixed(4),
+      ),
+      monthlyInstallment,
+      totalPayment,
+      totalInterest,
+    };
+  }
 }
